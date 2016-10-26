@@ -1,0 +1,103 @@
+$x: 20px;
+
+body {
+    background-color: #F5F5F5;
+}
+
+.wrapper-app{
+    background-color: #fff;
+    border: #C5C5C5 1px solid;
+    border-radius: 5px;
+}
+
+.color-green{
+    color: #50AB51;
+}
+
+.color-crimson{
+    color: crimson;
+}
+
+.margin-top{
+    margin-top: $x;
+}
+
+.margin-top-2x{
+    margin-top: 2 * $x;
+}
+
+.margin-top-3x{
+    margin-top: 3 * $x;
+}
+
+.padding-top{
+    padding-top: $x;
+}
+
+.padding-top-2x{
+    padding-top: 2 * $x;
+}
+
+.padding-top-3x{
+    padding-top: 3 * $x;
+}
+
+.padding-bottom{
+    padding-bottom: $x;
+}
+
+.padding-bottom-2x{
+    padding-bottom: 2 * $x;
+}
+
+.padding-bottom-3x{
+    padding-bottom: 3 * $x;
+}
+
+.form-group.required .control-label:after {
+    content: " *";
+    color: crimson;
+}
+
+.pass-success{
+    color: #50AB51;
+    list-style: none;
+    left: -15px;
+    position: relative;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    &:before{
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      font-family: "Glyphicons Halflings";
+      content: "\e089";
+      left: -5px;
+    }
+}
+
+.trigger-collapse{
+  cursor: pointer;
+  &:hover{
+    background-color: #F5F5F5;
+  }
+}
+
+.border-left{
+  border-left: 1px solid DarkGray;
+}
+
+.display-event{
+    margin: 3px 0px;
+    border-bottom: 1px solid DarkGray;
+}
+
+input.dirty:not(:focus):invalid {
+  background-color: #FFD9D9;
+}
+input.dirty:not(:focus):valid {
+  background-color: #D9FFD9;
+}
