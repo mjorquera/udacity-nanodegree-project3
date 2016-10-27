@@ -1,0 +1,10 @@
+{ "restaurants":
+  [{"name": "Apetone",
+    "address": "Santiago",
+    "photo": "photo1.jpg",
+    "type": "pizza",
+    "hours": "11:00 am - 10:00 pm",
+    "reviews": [{"reviewer": "Mario"}]
+  },
+  {"name": "Pizza Pizza"}]
+}

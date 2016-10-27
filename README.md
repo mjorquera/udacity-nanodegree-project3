@@ -14,7 +14,7 @@ $ npm install gulp
 ### Run gulp
 
 ```
-$ gulp
+$ npm i && gulp
 ```
 
 ### Browse to the Project
