@@ -1,4 +1,4 @@
-# Project 1: Meet-Up Event Planner
+# Project 3: Restaurant review app
 ## 1. Instalation
 
 ### Download Project
@@ -35,3 +35,7 @@ This form validate all the inputs, but there is no data storage.
 All the events are displayed in the page, when an event is entered the data is updated, there is no need to refresh the page.
 
 For showing the events i used knockout.js and firebase to storage.
+
+## 3. Extra
+
+Star rating by https://codepen.io/chrisdpratt/pen/dmyne
