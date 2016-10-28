@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="reviewer">
 
 <head>
 
@@ -27,7 +27,7 @@
 
 </head>
 
-<body>
+<body ng-controller="ReviewsController as reviews">
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -82,111 +82,36 @@
 
                 <div class="row">
 
-                    <div class="col-sm-4 col-lg-4 col-md-4">
+                    <div class="col-sm-4" ng-repeat="restaurant in restaurants">
                         <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
+                            <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
                             <div class="caption">
-                                <h4 class="pull-right">$24.99</h4>
-                                <h4><a href="#">First Product</a>
-                                </h4>
-                                <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">15 reviews</p>
+                                <h4><a href="#">{{restaurant.name}}</a></h4>
                                 <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
+                                  <small>
+                                  open from {{restaurant.start_time}} to {{restaurant.end_time}}
+                                  </small>
                                 </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$64.99</h4>
-                                <h4><a href="#">Second Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                <div class="row">
+                                  <div class="col-xs-8">
+                                    <address>
+                                      {{restaurant.address}}<br />
+                                      {{restaurant.city}}
+                                    </address>
+                                  </div>
+                                  <div class="col-xs-4">
+                                      <h5 class="pull-right">{{restaurant.type}}</h5>
+                                  </div>
+                                </div>
                             </div>
                             <div class="ratings">
-                                <p class="pull-right">12 reviews</p>
+                                <p class="pull-right">{{restaurant.reviewCount}} reviews</p>
                                 <p>
                                     <span class="glyphicon glyphicon-star"></span>
                                     <span class="glyphicon glyphicon-star"></span>
                                     <span class="glyphicon glyphicon-star"></span>
                                     <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$74.99</h4>
-                                <h4><a href="#">Third Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">31 reviews</p>
-                                <p>
                                     <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$84.99</h4>
-                                <h4><a href="#">Fourth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">6 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$94.99</h4>
-                                <h4><a href="#">Fifth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">18 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
                                 </p>
                             </div>
                         </div>
@@ -222,6 +147,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="js/restaurant-app.js"></script>
 
 </body>
 
