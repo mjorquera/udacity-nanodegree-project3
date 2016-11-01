@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="reviewer">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Restaurant Reviewer - Udacity Senior Front End Developer Nanodegree</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/main.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <base href="/" />
+</head>
+
+<body ng-controller="ReviewController as review">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><i class="fa fa-cutlery" aria-hidden="true"></i> Reviewfy</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead">Reviewfy <small>Reviews for restaurant</small></p>
+                <p>
+
+                </p>
+                <a href="index.html" class="btn btn-default"><i class="fa fa-arrow-left"></i> Go back</a>
+            </div>
+
+            <div class="col-md-9">
+                <div class="thumbnail">
+                  <div class="row">
+                      <div class="col-sm-4 padding-left">
+                        <h3 class="text-center">{{restaurant.name}}</h3>
+                        <h4><span class="label label-default">{{restaurant.type}}</span></h5>
+                        <p>
+                          <small>
+                          open from {{restaurant.start_time}} to {{restaurant.end_time}}
+                          </small>
+                        </p>
+                        <address>
+                          {{restaurant.address}}<br />
+                          {{restaurant.city}}
+                        </address>
+                        <h3 ng-show="restaurant.reviewRating">{{restaurant.reviewRating}}<small>/ 5</small></h3>
+                        <h3 ng-show="!restaurant.reviewRating">-<small>/ 5</small></h3>
+                        <div class="ratings">
+                            <p class="pull-right">{{restaurant.reviewCount}} reviews</p>
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                            </p>
+                        </div>
+                      </div>
+                      <div class="col-sm-8">
+                        <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
+                      </div>
+                  </div>
+                </div>
+                <div class="row margin-top-2x" ng-repeat="review in restaurant.reviews">
+                  <div class="col-xs-2 text-center">
+                    <img data-ng-src="{{review.avatar}}" alt="{{review.reviewer_name + ' avatar'}}">
+                  </div>
+                  <div class="col-xs-10">
+                    <div class="pull-right">
+                      <p>
+                        <small>{{review.date | date:'medium'}}</small>
+                      </p>
+                    </div>
+                    <div class="ratings">
+                      <p>
+                          <span class="label label-rating">{{review.rating | number:1}}</span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        {{review.comments}}
+                      </p>
+                    </div>
+                    <div>
+                      <small><em>-by {{review.reviewer_name}}</em></small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row margin-top-2x" ng-hide="reviews.length">
+                  <p>
+                    <em>{{restaurant.name}} hasn't received reviews yet, be the first one to add a review.</em>
+                  </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Copyright &copy; Mario Jorquera 2016 - Udacity Nanodegree</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="js/restaurant-app.js"></script>
+
+</body>
+
+</html>

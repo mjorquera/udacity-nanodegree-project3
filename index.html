@@ -71,6 +71,7 @@
                 <p>
 
                 </p>
+                <h5><i class="fa fa-search"></i> Filters</h5>
                 <div class="list-group">
                     <a href="#" class="list-group-item" aria-label="Cousine type Mexican">Mexican</a>
                     <a href="#" class="list-group-item">Pizza</a>
@@ -86,7 +87,7 @@
                         <div class="thumbnail">
                             <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
                             <div class="caption">
-                                <h4><a href="#">{{restaurant.name}}</a></h4>
+                                <h4><a href="restaurant.html?id={{restaurant.id}}">{{restaurant.name}}</a></h4>
                                 <p>
                                   <small>
                                   open from {{restaurant.start_time}} to {{restaurant.end_time}}
@@ -100,7 +101,7 @@
                                     </address>
                                   </div>
                                   <div class="col-xs-4">
-                                      <h5 class="pull-right">{{restaurant.type}}</h5>
+                                      <h5 class="pull-right"><span class="label label-default">{{restaurant.type}}</span></h5>
                                   </div>
                                 </div>
                             </div>

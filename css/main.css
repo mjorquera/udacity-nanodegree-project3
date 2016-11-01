@@ -78,6 +78,15 @@ footer {
 .padding-bottom-3x {
   padding-bottom: 60px; }
 
+.padding-left {
+  padding-left: 20px; }
+
+.padding-left-2x {
+  padding-left: 40px; }
+
+.padding-left-3x {
+  padding-left: 60px; }
+
 .form-group.required .control-label:after {
   content: " *";
   color: crimson; }
@@ -117,3 +126,6 @@ input.dirty:not(:focus):invalid {
 
 input.dirty:not(:focus):valid {
   background-color: #D9FFD9; }
+
+.label-rating {
+  background-color: #b40039; }
