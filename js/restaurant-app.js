@@ -22,7 +22,7 @@
           restaurant.isVisible = true;
           $http.get('data/reviews/' + restaurant.id + '.json').then(function(response) {
             restaurant.reviewCount = response.data.reviews.length;
-            restaurant.averageRating = parseInt(getAverage(response.data.reviews));
+            restaurant.averageRating = Math.round(getAverage(response.data.reviews));
           }, function(response){
             restaurant.reviewCount = 0;
           });
@@ -58,11 +58,21 @@
           $scope.restaurant.reviewCount = response.data.reviews.length;
           $scope.restaurant.reviews = response.data.reviews;
           $scope.restaurant.reviewRating = getAverage(response.data.reviews);
+          $scope.restaurant.averageRating = Math.round(getAverage(response.data.reviews));
         }, function(response){
           $scope.restaurant.reviewCount = 0;
         });
     });
 
+    $scope.range = function(n){
+      return new Array(n);
+    };
+  });
+
+  $('.rating input').change(function () {
+    var $radio = $(this);
+    $('.rating .selected').removeClass('selected');
+    $radio.closest('label').addClass('selected');
   });
 
 })();

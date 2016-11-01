@@ -81,10 +81,8 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
-
+            <div class="col-md-9" ng-cloak>
                 <div class="row">
-
                     <div class="col-sm-4" ng-repeat="restaurant in restaurants | filter:search" ng-show="restaurant.isVisible">
                         <div class="thumbnail">
                             <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">

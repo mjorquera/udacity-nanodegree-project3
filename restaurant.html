@@ -46,14 +46,18 @@
         <div class="row">
 
             <div class="col-md-3 padding-bottom">
-                <p class="lead">Reviewfy <small>Reviews for restaurant</small></p>
-                <p>
-
-                </p>
-                <a href="../index.html" class="btn btn-default"><i class="fa fa-arrow-left"></i> Go back</a>
+              <div class="row">
+                <div class="col-xs-8 col-md-12">
+                  <p class="lead">Reviewfy <small>Reviews for restaurant</small></p>
+                </div>
+                <div class="col-xs-4 col-md-12">
+                  <a href="../index.html" class="btn btn-default hidden-xs hidden-sm"><i class="fa fa-arrow-left"></i> Go back</a>
+                  <a href="../index.html" class="btn btn-default pull-right hidden-md hidden-lg"><i class="fa fa-arrow-left"></i> Go back</a>
+                </div>
+              </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-9" ng-cloak>
                 <div class="thumbnail">
                   <div class="row">
                       <div class="col-sm-4 padding-left">
@@ -72,13 +76,17 @@
                         <h3 ng-show="!restaurant.reviewRating">-<small>/ 5</small></h3>
                         <div class="ratings">
                             <p class="pull-right">{{restaurant.reviewCount}} reviews</p>
-                            <p>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
+                            <p ng-hide="restaurant.reviewCount == 0">
+                                <span class="glyphicon glyphicon-star" ng-repeat="n in range(restaurant.averageRating) track by $index"></span><span class="glyphicon glyphicon-star-empty" ng-repeat="n in range(5 - restaurant.averageRating) track by $index"></span>
                             </p>
+                            <p ng-show="restaurant.reviewCount == 0">
+                              -
+                            </p>
+                        </div>
+                        <div class="margin-top padding-bottom text-center">
+                          <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#newReviewModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Review this restaurant
+                          </button>
                         </div>
                       </div>
                       <div class="col-sm-8">
@@ -86,7 +94,8 @@
                       </div>
                   </div>
                 </div>
-                <div class="row margin-top-2x" ng-repeat="review in restaurant.reviews">
+                <div ng-init="limit = 5">
+                  <div class="row margin-top-2x" ng-repeat="review in restaurant.reviews | orderBy: '-date' | limitTo: limit as results">
                   <div class="col-xs-2 text-center">
                     <img data-ng-src="{{review.avatar}}" alt="{{review.reviewer_name + ' avatar'}}">
                     <div>
@@ -102,11 +111,7 @@
                     <div class="ratings">
                       <p>
                           <span class="label label-rating">{{review.rating | number:1}}</span>
-                          <span class="glyphicon glyphicon-star"></span>
-                          <span class="glyphicon glyphicon-star"></span>
-                          <span class="glyphicon glyphicon-star"></span>
-                          <span class="glyphicon glyphicon-star"></span>
-                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star" ng-repeat="n in range(review.rating) track by $index"></span><span class="glyphicon glyphicon-star-empty" ng-repeat="n in range(5 - review.rating) track by $index"></span>
                       </p>
                     </div>
                     <div>
@@ -116,13 +121,74 @@
                     </div>
                   </div>
                 </div>
-                <div class="row margin-top-2x" ng-hide="reviews.length">
+                </div>
+                <div class="text-center">
+                  <a href="#" ng-hide="results.length === restaurant.reviews.length" ng-click="limit = limit +2">show more...</a>
+                </div>
+                <div class="row margin-top-2x" ng-show="restaurant.reviewCount == 0">
                   <p>
-                    <em>{{restaurant.name}} hasn't received reviews yet, be the first one to add a review.</em>
+                    <em>{{restaurant.name}} hasn't received reviews yet, be the first one to <a href="#"  data-toggle="modal" data-target="#newReviewModal">add a review</a>.</em>
                   </p>
                 </div>
             </div>
 
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="newReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">New review for <strong>{{restaurant.name}}</strong></h4>
+              </div>
+              <div class="modal-body form-horizontal">
+                  <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="name" placeholder="Mario Jorquera">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="email" placeholder="mymail@mail.com">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Rating</label>
+                    <div class="col-sm-10">
+                      <div class="rating">
+                        <label>
+                          <input type="radio" name="rating" value="5" title="5 stars"> 5
+                        </label>
+                        <label>
+                          <input type="radio" name="rating" value="4" title="4 stars"> 4
+                        </label>
+                        <label>
+                          <input type="radio" name="rating" value="3" title="3 stars"> 3
+                        </label>
+                        <label>
+                          <input type="radio" name="rating" value="2" title="2 stars"> 2
+                        </label>
+                        <label>
+                          <input type="radio" name="rating" value="1" title="1 star"> 1
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="comment" class="col-sm-2 control-label">Comment</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control noresize" rows="3" id="comment"></textarea>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add review</button>
+              </div>
+            </div>
+          </div>
         </div>
 
     </div>
