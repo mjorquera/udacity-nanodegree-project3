@@ -5,26 +5,46 @@
     $locationProvider.html5Mode(true);
   }]);
 
+  var getAverage = function(reviews){
+    var length = reviews.length;
+    var sum = 0;
+    reviews.forEach(function(review){
+      sum += review.rating;
+    });
+    var average = sum / length;
+    return average.toFixed(1);
+  };
+
   app.controller('ReviewsController', function($scope, $http){
     $http.get('data/restaurants.json').then(function(response) {
         $scope.restaurants = response.data.restaurants;
         $scope.restaurants.forEach(function(restaurant) {
+          restaurant.isVisible = true;
           $http.get('data/reviews/' + restaurant.id + '.json').then(function(response) {
             restaurant.reviewCount = response.data.reviews.length;
+            restaurant.averageRating = parseInt(getAverage(response.data.reviews));
           }, function(response){
             restaurant.reviewCount = 0;
           });
         });
     });
 
-    $scope.getAverage = function(idRestaurant){
-      $http.get('data/reviews/'+idRestaurant+'.json').then(function(response) {
-          return response.data.reviews.length;
+    $scope.clearFilter = function() {
+      $scope.search = {};
+    };
+
+    $scope.filterByType = function(cousineType){
+      $scope.restaurants.forEach(function(restaurant){
+        if (restaurant.type == cousineType || cousineType == "All") {
+          restaurant.isVisible = true;
+        } else {
+          restaurant.isVisible = false;
+        }
       });
     };
 
-    var countReviews = function(idRestaurant){
-
+    $scope.range = function(n){
+      return new Array(n);
     };
   });
 
@@ -43,15 +63,6 @@
         });
     });
 
-    var getAverage = function(reviews){
-      var length = reviews.length;
-      var sum = 0;
-      reviews.forEach(function(review){
-        sum += review.rating;
-      });
-      var average = sum / length;
-      return average.toFixed(1);
-    };
   });
 
 })();
