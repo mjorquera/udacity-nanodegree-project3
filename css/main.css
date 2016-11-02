@@ -167,3 +167,6 @@ input.dirty:not(:focus):valid {
   background: -webkit-linear-gradient(-45deg, #b40039 0%, #b40039 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; }
+
+input.ng-dirty.ng-invalid {
+  border-color: red; }

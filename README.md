@@ -22,15 +22,15 @@ Open a web browser and go to [http://localhost:3000](http://localhost:3000)
 
 ## 2. Usage
 
-### Login
+### View and Filter Restaurants
 
 You can use any login email and password, this is just the start, to enter the event page.
 
-### Sign Up
+### View specific restaurant
 
 This form validate all the inputs, but there is no data storage.
 
-### Events
+#### Review a restaurant
 
 All the events are displayed in the page, when an event is entered the data is updated, there is no need to refresh the page.
 
@@ -38,4 +38,5 @@ For showing the events i used knockout.js and firebase to storage.
 
 ## 3. Extra
 
-Star rating by https://codepen.io/chrisdpratt/pen/dmyne
+* Star rating based in https://codepen.io/chrisdpratt/pen/dmyne
+* Avatar generator by https://robohash.org/

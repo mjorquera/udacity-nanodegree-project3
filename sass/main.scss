@@ -213,3 +213,7 @@ input.dirty:not(:focus):valid {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+input.ng-dirty.ng-invalid {
+  border-color: red
+}

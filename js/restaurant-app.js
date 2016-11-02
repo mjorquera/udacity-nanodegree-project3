@@ -16,17 +16,18 @@
   };
 
   app.controller('ReviewsController', function($scope, $http){
-    $http.get('data/restaurants.json').then(function(response) {
-        $scope.restaurants = response.data.restaurants;
-        $scope.restaurants.forEach(function(restaurant) {
-          restaurant.isVisible = true;
-          $http.get('data/reviews/' + restaurant.id + '.json').then(function(response) {
-            restaurant.reviewCount = response.data.reviews.length;
-            restaurant.averageRating = Math.round(getAverage(response.data.reviews));
-          }, function(response){
-            restaurant.reviewCount = 0;
-          });
-        });
+    var restaurantsRef = firebase.database().ref("/restaurants").limitToFirst(2);
+    restaurantsRef.on('value', function(snapshot) {
+      $scope.restaurants = snapshot.val();
+      $scope.restaurants.forEach(function(restaurant) {
+        restaurant.isVisible = true;
+        if (typeof restaurant.reviews !== 'undefined' && restaurant.reviews.length > 0) {
+          restaurant.reviewCount = restaurant.reviews.length;
+          restaurant.averageRating = Math.round(getAverage(restaurant.reviews));
+        } else {
+          restaurant.reviewCount = 0;
+        }
+      });
     });
 
     $scope.clearFilter = function() {
@@ -50,6 +51,8 @@
 
   app.controller('ReviewController', function($scope, $http, $location){
     var id = $location.search().id;
+    $scope.newReview = {};
+
     $http.get('data/restaurants.json').then(function(response) {
         var result = $.grep(response.data.restaurants, function(e) {return e.id ==id; });
         $scope.restaurant = result[0];
@@ -63,6 +66,21 @@
           $scope.restaurant.reviewCount = 0;
         });
     });
+
+    $scope.save = function(newReview){
+      $scope.newReview.date = new Date();
+      $scope.newReview.avatar = "https://robohash.org/" + newReview.email + ".png"
+      console.log(newReview);
+    };
+
+    $scope.setRating = function(selectedRating){
+      $scope.newReview.rating = selectedRating;
+    };
+
+    $scope.reset = function(){
+      $('.rating .selected').removeClass('selected');
+      $scope.newReview = {};
+    };
 
     $scope.range = function(n){
       return new Array(n);
