@@ -217,3 +217,7 @@ input.dirty:not(:focus):valid {
 input.ng-dirty.ng-invalid {
   border-color: red
 }
+
+.restaurant{
+  max-height: 355px;
+}
