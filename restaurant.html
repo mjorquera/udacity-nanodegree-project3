@@ -12,6 +12,7 @@
     <title>Restaurant Reviewer - Reviewfy</title>
 
     <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -56,8 +57,12 @@
                 </div>
               </div>
             </div>
-
-            <div class="col-md-9" ng-cloak>
+            <div class="col-md-9 text-center" ng-hide="restaurant.$resolved">
+              <p class="lead margin-top-3x">
+                <i class="fa fa-refresh fa-3x fa-spin" aria-hidden="true"></i>
+              </p>
+            </div>
+            <div class="col-md-9" ng-show="restaurant.$resolved" ng-cloak>
                 <div class="thumbnail">
                   <div class="row">
                       <div class="col-sm-4 padding-left">
@@ -97,7 +102,7 @@
                 <div ng-init="limit = 5">
                   <div class="row margin-top-2x" ng-repeat="review in restaurant.reviews | orderBy: '-date' | limitTo: limit as results">
                   <div class="col-xs-2 text-center">
-                    <img data-ng-src="{{review.avatar}}" alt="{{review.reviewer_name + ' avatar'}}">
+                    <img class="user-avatar" data-ng-src="{{review.avatar}}" alt="{{review.reviewer_name + ' avatar'}}">
                     <div>
                       <small><em>{{review.reviewer_name}}</em></small>
                     </div>
@@ -215,9 +220,10 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
     <script src="/node_modules/angular/angular.js"></script>
-    <script src="js/restaurant-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
     <script>
       // Initialize Firebase
       var config = {
@@ -229,6 +235,7 @@
       };
       firebase.initializeApp(config);
     </script>
+    <script src="js/restaurant-app.js"></script>
 
 </body>
 

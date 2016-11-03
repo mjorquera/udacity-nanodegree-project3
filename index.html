@@ -80,12 +80,16 @@
                     <a href="#" class="list-group-item" aria-label="Type Filter Sea Food" ng-click="filterByType('Sea Food')">Sea Food</a>
                 </div>
             </div>
-
+            <div class="col-md-9 text-center" ng-hide="restaurants.$resolved">
+              <p class="lead margin-top-3x">
+                <i class="fa fa-refresh fa-3x fa-spin" aria-hidden="true"></i>
+              </p>
+            </div>
             <div class="col-md-9" ng-cloak>
                 <div class="row">
                     <div class="col-sm-4 restaurant" ng-repeat="restaurant in restaurants | filter:search" ng-show="restaurant.isVisible">
                         <div class="thumbnail">
-                            <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
+                            <img class="img-home" data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
                             <div class="caption">
                                 <h4><a href="restaurant.html?id={{restaurant.id}}">{{restaurant.name}}</a></h4>
                                 <p>

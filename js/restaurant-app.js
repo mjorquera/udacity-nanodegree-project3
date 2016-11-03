@@ -16,8 +16,8 @@
   };
 
   app.controller('ReviewsController', function($scope, $firebaseArray){
+    $scope.restaurants = [];
     var ref = firebase.database().ref("/restaurants");
-
     var restaurantsList = $firebaseArray(ref);
 
     restaurantsList.$loaded().then(function(restaurants) {
@@ -31,19 +31,7 @@
         }
       });
       $scope.restaurants = restaurants;
-      debugger;
     });
-    debugger;
-    // $scope.restaurants.forEach(function(restaurant) {
-    //   restaurant.isVisible = true;
-    //   if (typeof restaurant.reviews !== 'undefined' && restaurant.reviews.length > 0) {
-    //     restaurant.reviewCount = restaurant.reviews.length;
-    //     restaurant.averageRating = Math.round(getAverage(restaurant.reviews));
-    //   } else {
-    //     restaurant.reviewCount = 0;
-    //   }
-    // });
-    console.log($scope.restaurants);
 
     $scope.clearFilter = function() {
       $scope.search = {};
@@ -64,42 +52,50 @@
     };
   });
 
-  app.factory('RestaurantsService', ['$firebaseArray', function($firebaseArray){
-    var ref = firebase.database().ref("/restaurants");
-    var restaurants = $firebaseArray(ref);
-
-    var getRestaurants = function(){
-      debugger;
-      return restaurants;
-    };
-
-    return {
-      getRestaurants: getRestaurants
-    }
-  }]);
-
-  app.controller('ReviewController', function($scope, $http, $location){
+  app.controller('ReviewController', function($scope, $http, $location, $firebaseObject){
     var id = $location.search().id;
     $scope.newReview = {};
 
-    $http.get('data/restaurants.json').then(function(response) {
-        var result = $.grep(response.data.restaurants, function(e) {return e.id ==id; });
-        $scope.restaurant = result[0];
-        //get the review for the restaurant
-        $http.get('data/reviews/' + id + '.json').then(function(response) {
-          $scope.restaurant.reviewCount = response.data.reviews.length;
-          $scope.restaurant.reviews = response.data.reviews;
-          $scope.restaurant.reviewRating = getAverage(response.data.reviews);
-          $scope.restaurant.averageRating = Math.round(getAverage(response.data.reviews));
-        }, function(response){
-          $scope.restaurant.reviewCount = 0;
-        });
+    var ref = firebase.database().ref("/restaurants").child(id);
+    $scope.restaurant = $firebaseObject(ref);
+
+    $scope.restaurant.$loaded().then(function(restaurant) {
+      if (typeof restaurant.reviews !== "undefined") {
+        $scope.restaurant.reviewCount = restaurant.reviews.length;
+        $scope.restaurant.reviewRating = getAverage(restaurant.reviews);
+        $scope.restaurant.averageRating = Math.round(getAverage(restaurant.reviews));
+      } else {
+        $scope.restaurant.reviewCount = 0;
+      }
     });
 
     $scope.save = function(newReview){
-      $scope.newReview.date = new Date();
+      $scope.newReview.date = new Date().toISOString();
       $scope.newReview.avatar = "https://robohash.org/" + newReview.email + ".png"
       console.log(newReview);
+      if (typeof $scope.restaurant.reviews == "undefined") {
+        $scope.restaurant.reviews = [newReview];
+      } else {
+        $scope.restaurant.reviews.push(newReview);
+      }
+      $scope.restaurant.reviewCount = $scope.restaurant.reviews.length;
+      $scope.restaurant.reviewRating = getAverage($scope.restaurant.reviews);
+      $scope.restaurant.averageRating = Math.round(getAverage($scope.restaurant.reviews));
+
+      $scope.restaurant.$save($scope.restaurant).then(function(newRef){
+        $('#newReviewModal').modal('hide');
+        $.notify({
+        	message: 'Review added correctly'
+        },{
+        	type: 'success',
+          placement: {align: 'center'}
+        });
+      }).catch(function(error){
+        $.notify({message: "We couldn't add the review: " + error},{
+          type: 'danger',
+          placement: {align: 'center'}
+        });
+      });
     };
 
     $scope.setRating = function(selectedRating){

@@ -30,9 +30,11 @@ body {
 .caption h4 {
     white-space: nowrap;
 }
-
 .thumbnail img {
     width: 100%;
+}
+
+.thumbnail .img-home {
     height: 170px;
 }
 
@@ -221,4 +223,8 @@ input.ng-dirty.ng-invalid {
 
 .restaurant{
   max-height: 355px;
+}
+
+.user-avatar{
+  max-width: 50px;
 }

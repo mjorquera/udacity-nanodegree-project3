@@ -23,7 +23,9 @@ body {
   white-space: nowrap; }
 
 .thumbnail img {
-  width: 100%;
+  width: 100%; }
+
+.thumbnail .img-home {
   height: 170px; }
 
 .ratings {
@@ -174,3 +176,6 @@ input.ng-dirty.ng-invalid {
 
 .restaurant {
   max-height: 355px; }
+
+.user-avatar {
+  max-width: 50px; }
