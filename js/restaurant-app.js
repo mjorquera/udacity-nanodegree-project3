@@ -1,5 +1,5 @@
-(function() {
-  var app = angular.module('reviewer', []);
+// (function() {
+  var app = angular.module('reviewer', ['firebase']);
 
   app.config(['$locationProvider', function($locationProvider){
     $locationProvider.html5Mode(true);
@@ -15,11 +15,13 @@
     return average.toFixed(1);
   };
 
-  app.controller('ReviewsController', function($scope, $http){
-    var restaurantsRef = firebase.database().ref("/restaurants").limitToFirst(2);
-    restaurantsRef.on('value', function(snapshot) {
-      $scope.restaurants = snapshot.val();
-      $scope.restaurants.forEach(function(restaurant) {
+  app.controller('ReviewsController', function($scope, $firebaseArray){
+    var ref = firebase.database().ref("/restaurants");
+
+    var restaurantsList = $firebaseArray(ref);
+
+    restaurantsList.$loaded().then(function(restaurants) {
+      restaurants.forEach(function(restaurant) {
         restaurant.isVisible = true;
         if (typeof restaurant.reviews !== 'undefined' && restaurant.reviews.length > 0) {
           restaurant.reviewCount = restaurant.reviews.length;
@@ -28,7 +30,20 @@
           restaurant.reviewCount = 0;
         }
       });
+      $scope.restaurants = restaurants;
+      debugger;
     });
+    debugger;
+    // $scope.restaurants.forEach(function(restaurant) {
+    //   restaurant.isVisible = true;
+    //   if (typeof restaurant.reviews !== 'undefined' && restaurant.reviews.length > 0) {
+    //     restaurant.reviewCount = restaurant.reviews.length;
+    //     restaurant.averageRating = Math.round(getAverage(restaurant.reviews));
+    //   } else {
+    //     restaurant.reviewCount = 0;
+    //   }
+    // });
+    console.log($scope.restaurants);
 
     $scope.clearFilter = function() {
       $scope.search = {};
@@ -48,6 +63,20 @@
       return new Array(n);
     };
   });
+
+  app.factory('RestaurantsService', ['$firebaseArray', function($firebaseArray){
+    var ref = firebase.database().ref("/restaurants");
+    var restaurants = $firebaseArray(ref);
+
+    var getRestaurants = function(){
+      debugger;
+      return restaurants;
+    };
+
+    return {
+      getRestaurants: getRestaurants
+    }
+  }]);
 
   app.controller('ReviewController', function($scope, $http, $location){
     var id = $location.search().id;
@@ -92,5 +121,5 @@
     $('.rating .selected').removeClass('selected');
     $radio.closest('label').addClass('selected');
   });
-
-})();
+//
+// })();

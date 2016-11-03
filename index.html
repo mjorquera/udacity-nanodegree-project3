@@ -81,7 +81,10 @@
                 </div>
             </div>
 
-            <div class="col-md-9" ng-cloak>
+            <div class="col-md-9">
+                <p>
+                  {{reviews.restaurants}}
+                </p>
                 <div class="row">
                     <div class="col-sm-4" ng-repeat="restaurant in restaurants | filter:search" ng-show="restaurant.isVisible">
                         <div class="thumbnail">
@@ -148,8 +151,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="/node_modules/angular/angular.js"></script>
-    <script src="js/restaurant-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
     <script>
       // Initialize Firebase
       var config = {
@@ -161,6 +164,7 @@
       };
       firebase.initializeApp(config);
     </script>
+    <script src="js/restaurant-app.js"></script>
 </body>
 
 </html>
