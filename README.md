@@ -11,10 +11,15 @@ Download .zip file or clone this project.
 $ npm install gulp
 ```
 
-### Run gulp
-
+### Run
+Run in **develop** mode
 ```
 $ npm i && gulp
+```
+
+Run in **production** mode (this uses the *dist* folder for the app)
+```
+$ npm i && gulp serve:dist
 ```
 
 ### Browse to the Project

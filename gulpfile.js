@@ -1,101 +1,98 @@
 var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var babelify = require('babelify');
-var useref = require('gulp-useref');
+var gulpIf = require('gulp-if');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
-var gulpIf = require('gulp-if');
-var assign = require('lodash/object/assign');
-var hbsfy = require('hbsfy');
+var useref = require('gulp-useref');
+var clean = require('gulp-clean');
+var ngAnnotate = require('gulp-ng-annotate');
 
 var browserSync = require('browser-sync').create();
- browserSync.init({
-     server: "./"
- });
- browserSync.stream();
+function browserSyncInit(baseDir) {
+    browserSync.init({
+        server: { baseDir: baseDir }
+    });
+    browserSync.stream();
+}
 
-gulp.task('styles', function(){
-  gulp.src('sass/**/*.scss')
+// Delete the dist directory
+gulp.task('clean', function() {
+ return gulp.src('dist/')
+  .pipe(clean());
+});
+
+gulp.task('sass', function(){
+  return gulp.src('src/sass/*.scss')
           .pipe(sass().on('error', sass.logError))
           .pipe(autoprefixer({
           			browsers: ['last 2 versions'],
           			cascade: false
           		}))
-          .pipe(gulp.dest('./css'));
+          .pipe(gulp.dest('src/css'))
+          .pipe(browserSync.reload({
+            stream: true
+          }));
 });
 
-gulp.task('default', function(){
-  gulp.watch('sass/**/*.scss',['styles']);
-  gulp.watch('./*.html', browserSync.reload);
-  gulp.watch('js/**/*.js', browserSync.reload);
+gulp.task('compress', ['clean'], function(){
+  return gulp.src('src/js/restaurant-app.js')
+          .pipe(ngAnnotate())
+          .pipe(uglify())
+          .pipe(gulp.dest('dist/js'))
 });
 
 gulp.task('useref', function(){
-  console.log("Hello");
-  return gulp.src('./*.html')
+  return gulp.src('src/*.html')
     .pipe(useref())
-    .pipe(gulpIf('*.js', uglify()))
     .pipe(gulpIf('*.css', cssnano()))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('src'))
 });
 
-function createBundle(src) {
-  if (!src.push) {
-    src = [src];
-  }
-
-  var customOpts = {
-    entries: src,
-    debug: true
-  };
-  var opts = assign({}, watchify.args, customOpts);
-  var b = watchify(browserify(opts));
-
-  b.transform(babelify.configure({
-    stage: 1
-  }));
-
-  b.transform(hbsfy);
-  b.on('log', plugins.util.log);
-  return b;
-}
-
-function bundle(b, outputPath) {
-  var splitPath = outputPath.split('/');
-  var outputFile = splitPath[splitPath.length - 1];
-  var outputDir = splitPath.slice(0, -1).join('/');
-
-  return b.bundle()
-    // log errors if they happen
-    .on('error', plugins.util.log.bind(plugins.util, 'Browserify Error'))
-    .pipe(source(outputFile))
-    // optional, remove if you don't need to buffer file contents
-    .pipe(buffer())
-    // optional, remove if you dont want sourcemaps
-    .pipe(plugins.sourcemaps.init({loadMaps: true})) // loads map from browserify file
-       // Add transformation tasks to the pipeline here.
-    .pipe(plugins.sourcemaps.write('./')) // writes .map file
-    .pipe(gulp.dest('build/public/' + outputDir));
-}
-
-var jsBundles = {
-  // 'js/polyfills/promise.js': createBundle('./public/js/polyfills/promise.js'),
-  // 'js/polyfills/url.js': createBundle('./public/js/polyfills/url.js'),
-  // 'js/settings.js': createBundle('./public/js/settings/index.js'),
-  // 'js/main.js': createBundle('./public/js/main/index.js'),
-  // 'js/remote-executor.js': createBundle('./public/js/remote-executor/index.js'),
-  // 'js/idb-test.js': createBundle('./public/js/idb-test/index.js'),
-  'sw.js': createBundle('./js/sw/index.js')
+var paths = {
+ scripts: ['js/**/*.js', '!js/libs/**/*.js'],
+ images: ['images/*.ico'],
+ html: ['index.html', 'restaurant.html'],
+ styles: ['css/**/*.css'],
+ fonts: ['fonts/*'],
+ libs: ['js/libs/**/*.js'],
+ dist: 'dist/'
 };
 
-gulp.task('js:browser', function () {
-  return mergeStream.apply(null,
-    Object.keys(jsBundles).map(function(key) {
-      return bundle(jsBundles[key], key);
-    })
-  );
+gulp.task('copy', ['clean'], function() {
+ // Copy html
+ gulp.src(paths.html, {cwd: 'src/'})
+ .pipe(gulp.dest('dist/'));
+
+ // Copy styles
+ gulp.src(paths.styles, {cwd: 'src/'})
+ .pipe(gulp.dest('dist/css'));
+
+ // Copy images files
+ gulp.src(paths.images, {cwd: 'src/'})
+ .pipe(gulp.dest('dist/images'));
+
+ // Copy fonts files
+ gulp.src(paths.fonts, {cwd: 'src/'})
+ .pipe(gulp.dest('dist/fonts'));
+
+ // Copy lib scripts, maintaining the original directory structure
+gulp.src(paths.libs, {cwd: 'src/**'})
+.pipe(gulp.dest('dist/'));
+});
+
+// A development task to run anytime a file changes
+gulp.task('watch', function() {
+ gulp.watch('src/**/*', ['compress', 'sass', 'copy']);
+});
+
+gulp.task('default', ['useref'], function(){
+  browserSyncInit('src');
+  gulp.watch('src/sass/*.scss',['sass']);
+  gulp.watch('src/*.html', browserSync.reload);
+  gulp.watch('src/js/*.js', browserSync.reload);
+});
+
+gulp.task('serve:dist', ['clean','compress','sass','useref','copy'], function(){
+  browserSyncInit('dist');
 });
