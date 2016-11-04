@@ -179,3 +179,6 @@ input.ng-dirty.ng-invalid {
 
 .user-avatar {
   max-width: 50px; }
+
+.btn-success {
+  background-color: #006800; }

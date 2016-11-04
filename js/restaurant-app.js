@@ -1,4 +1,3 @@
-// (function() {
   var app = angular.module('reviewer', ['firebase']);
 
   app.config(['$locationProvider', function($locationProvider){
@@ -117,5 +116,3 @@
     $('.rating .selected').removeClass('selected');
     $radio.closest('label').addClass('selected');
   });
-//
-// })();

@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="theme-color" content="#2196f3">
+    <link rel="reviewfy icon" type="image/png" href="images/favicon.ico">
     <title>Restaurant Reviewer - Udacity Senior Front End Developer Nanodegree</title>
 
     <!-- Bootstrap Core CSS -->
@@ -34,7 +35,7 @@
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="#"><i class="fa fa-cutlery" aria-hidden="true"></i> Reviewfy</a>
+                <a class="navbar-brand" href="#" aria-label="Reviewfy Home"><i class="fa fa-cutlery" aria-hidden="true"></i> Reviewfy</a>
             </div>
         </div>
         <!-- /.container -->
@@ -46,18 +47,19 @@
         <div class="row">
 
             <div class="col-md-3">
-                <p class="lead">Reviewfy <small>Reviews for restaurant</small></p>
+              <aside>
+                <h1 class="lead">Reviewfy <small>Reviews for restaurant</small></h1>
                 <p>
 
                 </p>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-xs btn-default" ng-click="clearFilter()"><i class="fa fa-times"></i> Clear</a>
+                  <a href="#" class="btn btn-xs btn-default" ng-click="clearFilter()" aria-label="Clear filters"><i class="fa fa-times" aria-hidden="true"></i> Clear</a>
                 </div>
-                <h5><i class="fa fa-search"></i> Filters</h5>
-                <h6>By Name</h6>
+                <h4><i class="fa fa-search" aria-hidden="true"></i> Filters</h4>
+                <h5 aria-label="Filter by name">By Name</h5>
                 <input type="text" class="form-control" placeholder="Mc Burger" aria-label="Name Filter" ng-model="search.name">
                 <hr />
-                <h6>By Rating</h6>
+                <h5 aria-label="Filter by rating">By Rating</h5>
                 <select class="form-control" aria-label="Rating Filter" ng-model="search.averageRating">
                   <option value="" disabled selected>(Select Rating)</option>
                   <option>1</option>
@@ -67,7 +69,7 @@
                   <option>5</option>
                 </select>
                 <hr />
-                <h6>By Type</h6>
+                <h5 aria-label="Filter by type">By Type</h5>
                 <div class="list-group">
                     <a href="#" class="list-group-item" aria-label="Type Filter All" ng-click="filterByType('All')">All</a>
                     <a href="#" class="list-group-item" aria-label="Type Filter Burger" ng-click="filterByType('Burger')">Burger</a>
@@ -79,6 +81,7 @@
                     <a href="#" class="list-group-item" aria-label="Type Filter Salad" ng-click="filterByType('Salad')">Salad</a>
                     <a href="#" class="list-group-item" aria-label="Type Filter Sea Food" ng-click="filterByType('Sea Food')">Sea Food</a>
                 </div>
+              </aside>
             </div>
             <div class="col-md-9 text-center" ng-hide="restaurants.$resolved">
               <p class="lead margin-top-3x">
@@ -86,12 +89,14 @@
               </p>
             </div>
             <div class="col-md-9" ng-cloak>
+                <main>
                 <div class="row">
                     <div class="col-sm-4 restaurant" ng-repeat="restaurant in restaurants | filter:search" ng-show="restaurant.isVisible">
+                      <article>
                         <div class="thumbnail">
                             <img class="img-home" data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
                             <div class="caption">
-                                <h4><a href="restaurant.html?id={{restaurant.id}}">{{restaurant.name}}</a></h4>
+                                <h4><a href="restaurant.html?id={{restaurant.id}}" aria-label="Restaurant: {{restaurant.name}}, type: {{restaurant.type}}">{{restaurant.name}}</a></h4>
                                 <p>
                                   <small>
                                   open from {{restaurant.start_time}} to {{restaurant.end_time}}
@@ -105,7 +110,7 @@
                                     </address>
                                   </div>
                                   <div class="col-xs-4">
-                                      <h5 class="pull-right"><span class="label label-default">{{restaurant.type}}</span></h5>
+                                      <p class="text-sm pull-right"><span class="label label-default">{{restaurant.type}}</span></p>
                                   </div>
                                 </div>
                             </div>
@@ -119,10 +124,11 @@
                                 </p>
                             </div>
                         </div>
+                      </article>
                     </div>
 
                 </div>
-
+                </main>
             </div>
 
         </div>

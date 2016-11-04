@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="theme-color" content="#2196f3">
+    <link rel="reviewfy icon" type="image/png" href="images/favicon.ico">
     <title>Restaurant Reviewer - Reviewfy</title>
 
     <!-- Bootstrap Core CSS -->
@@ -47,15 +48,17 @@
         <div class="row">
 
             <div class="col-md-3 padding-bottom">
-              <div class="row">
-                <div class="col-xs-8 col-md-12">
-                  <p class="lead">Reviewfy <small>Reviews for restaurant</small></p>
+              <aside>
+                <div class="row">
+                  <div class="col-xs-8 col-md-12">
+                    <h1 class="lead">Reviewfy <small>Reviews for restaurant</small></h1>
+                  </div>
+                  <div class="col-xs-4 col-md-12">
+                    <a href="../index.html" class="btn btn-default hidden-xs hidden-sm" aria-hidden="true"><i class="fa fa-arrow-left"></i> Go back</a>
+                    <a href="../index.html" class="btn btn-default pull-right hidden-md hidden-lg"><i class="fa fa-arrow-left"></i> Go back</a>
+                  </div>
                 </div>
-                <div class="col-xs-4 col-md-12">
-                  <a href="../index.html" class="btn btn-default hidden-xs hidden-sm"><i class="fa fa-arrow-left"></i> Go back</a>
-                  <a href="../index.html" class="btn btn-default pull-right hidden-md hidden-lg"><i class="fa fa-arrow-left"></i> Go back</a>
-                </div>
-              </div>
+              </aside>
             </div>
             <div class="col-md-9 text-center" ng-hide="restaurant.$resolved">
               <p class="lead margin-top-3x">
@@ -63,11 +66,12 @@
               </p>
             </div>
             <div class="col-md-9" ng-show="restaurant.$resolved" ng-cloak>
+              <main>
                 <div class="thumbnail">
                   <div class="row">
                       <div class="col-sm-4 padding-left">
-                        <h3 class="text-center">{{restaurant.name}}</h3>
-                        <h4><span class="label label-default">{{restaurant.type}}</span></h5>
+                        <h2 class="text-center" aria-label="Restaurant: {{restaurant.name}}, type: {{restaurant.type}}">{{restaurant.name}}</h2>
+                        <p class="lead"><span class="label label-default">{{restaurant.type}}</span></p>
                         <p>
                           <small>
                           open from {{restaurant.start_time}} to {{restaurant.end_time}}
@@ -77,8 +81,8 @@
                           {{restaurant.address}}<br />
                           {{restaurant.city}}
                         </address>
-                        <h3 ng-show="restaurant.reviewRating">{{restaurant.reviewRating}}<small>/ 5</small></h3>
-                        <h3 ng-show="!restaurant.reviewRating">-<small>/ 5</small></h3>
+                        <h3 aria-hidden="true" ng-show="restaurant.reviewRating">{{restaurant.reviewRating}}<small>/ 5</small></h3>
+                        <h3 aria-hidden="true" ng-show="!restaurant.reviewRating">-<small>/ 5</small></h3>
                         <div class="ratings">
                             <p class="pull-right">{{restaurant.reviewCount}} reviews</p>
                             <p ng-hide="restaurant.reviewCount == 0">
@@ -98,6 +102,9 @@
                         <img data-ng-src="{{restaurant.photo}}" alt="{{restaurant.name + ' photo'}}">
                       </div>
                   </div>
+                </div>
+                <div>
+                  <h3>Reviews</h3>
                 </div>
                 <div ng-init="limit = 5">
                   <div class="row margin-top-2x" ng-repeat="review in restaurant.reviews | orderBy: '-date' | limitTo: limit as results">
@@ -135,6 +142,7 @@
                     <em>{{restaurant.name}} hasn't received reviews yet, be the first one to <a href="#"  data-toggle="modal" data-target="#newReviewModal">add a review</a>.</em>
                   </p>
                 </div>
+              </main>
             </div>
 
         </div>
@@ -146,7 +154,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">New review for <strong>{{restaurant.name}}</strong></h4>
               </div>
-              <div class="modal-body form-horizontal">
+              <div class="modal-body form-horizontal" role="form">
                   <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-10">
