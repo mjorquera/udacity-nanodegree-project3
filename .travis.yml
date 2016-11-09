@@ -7,4 +7,9 @@ branches:
 before_script:
   - npm install -g gulp
   - npm i
-  - gulp serve:dist
+deploy:
+  provider: heroku
+  api_key:
+    secure: "fd8a69f4-8735-418a-9322-58b9530f1d61"
+  app: reviewfy
+    
